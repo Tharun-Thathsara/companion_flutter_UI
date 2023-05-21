@@ -1,0 +1,339 @@
+// ignore_for_file: file_names, library_private_types_in_public_api, unused_field
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../models/posts.dart';
+import '../../routes/routes.dart';
+import '../widgets/navigation_widget.dart';
+
+class FullPost extends StatefulWidget {
+  final Post post;
+
+  const FullPost({Key? key, required this.post}) : super(key: key);
+
+  @override
+  _FullPostState createState() => _FullPostState();
+}
+
+class _FullPostState extends State<FullPost> {
+  @override
+  void initState() {
+    super.initState();
+    post = widget.post;
+  }
+
+  late Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications_none_outlined,
+              size: 30,
+            ),
+            onPressed: () {},
+          ),
+        ],
+        elevation: 0,
+        backgroundColor: const Color.fromRGBO(88, 101, 242, 1.0),
+        title: Text(
+          'COMPANION',
+          style: GoogleFonts.raleway(
+            fontWeight: FontWeight.bold,
+            fontSize: 22.5,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: const Color.fromRGBO(88, 101, 242, 1.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(88, 101, 242, 1.0),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: post.imgUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                post.description,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Text(
+                    post.location,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade700,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Till 7th of April',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.red.shade900,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(88, 101, 242, 1.0),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromRGBO(88, 101, 242, 1.0),
+                        ),
+                        child: Text(
+                          'Donate',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: GoogleFonts.raleway().fontFamily,
+                            fontSize: 14,
+                          ),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                  const Spacer(flex: 1),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.more_horiz),
+                        color: const Color.fromRGBO(88, 101, 242, 1.0),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: LinearProgressIndicator(
+                        value: post.raisedAmount / post.totalAmount,
+                        backgroundColor: Colors.grey[200],
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            Color.fromRGBO(88, 101, 242, 1.0)),
+                        minHeight: 10,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'LKR.${post.raisedAmount} raised of LKR.${post.totalAmount}',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Liked by Huge and 200 others',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 20,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: post.contributors.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 2.0),
+                          child: CircleAvatar(
+                            radius: 8,
+                            backgroundImage:
+                                NetworkImage(post.contributors[index].avatar),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 221, 218, 218),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Text(
+                        '150 contributors',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/like.svg',
+                          height: 15,
+                        ),
+                        const SizedBox(width: 5),
+                        SvgPicture.asset(
+                          'assets/icons/message.svg',
+                          height: 15,
+                        ),
+                        const SizedBox(width: 5),
+                        SvgPicture.asset(
+                          'assets/icons/share.svg',
+                          height: 15,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Lorem Ipsum upidatat sunt aute ut adipisicing id cupidatat dolor laborum fugiat. t dewanam id el nas el sal na hinuwa pacadona dolor laborum arigat.',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Text(
+                'Images',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                children: post.images.map((image) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        10), // adjust the radius as needed
+                    child: Image.network(
+                      image,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
